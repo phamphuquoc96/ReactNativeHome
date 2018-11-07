@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, TextInput,Text } from 'react-native';
-import {Button,Card,CardSection,Input} from "./common";
+import {Button, Card, CardSection, Input, Spinner} from "./common";
 
 class LoginForm extends Component{
-    state = { email: '',password:'', status:''};
+    state = { email: '',password:'', status:'', loading:false};
 
     onButtonPress(){
         console.log("pressed");
@@ -11,13 +11,30 @@ class LoginForm extends Component{
         console.log(this.state.password);
 
         const {email,password} = this.state;
-
+        this.setState({loading:true});
 
         if(email == 'quoc' && password == '123'){
             this.setState({status: 'Success'})}
             else{
                 this.setState({status: 'Failed'})
             };
+        this.setState({
+            loading : false,
+            email:'',
+            password:''
+        });
+    }
+
+    renderButton(){
+        if(this.state.loading){
+            return <Spinner size={'small'}/>;
+        };
+
+        return(
+            <Button onPress={this.onButtonPress.bind(this)}>
+                Log in
+            </Button>
+        );
     }
 
     render(){
@@ -45,9 +62,7 @@ class LoginForm extends Component{
                     {this.state.status}
                 </Text>
                 <CardSection>
-                    <Button onPress={this.onButtonPress.bind(this)}>
-                        Log in
-                    </Button>
+                    {this.renderButton()}
                 </CardSection>
             </Card>
         );
